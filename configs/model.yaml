@@ -1,0 +1,9 @@
+# Grayscale in, RGB out
+in_channels: 1
+out_channels: 3
+image_size: 256
+batch_size: 1
+
+hydra:
+  job:
+    chdir: false
