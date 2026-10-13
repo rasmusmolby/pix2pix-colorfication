@@ -19,7 +19,7 @@ class Generator(nn.Module):
         )
 
         def down_block(in_features, out_features):
-            # Each block halves the image size and learns more features.
+            # ENCODER BLOCK
             return nn.Sequential(
                 nn.Conv2d(in_features, out_features, 4, 2, 1, bias=False),
                 nn.BatchNorm2d(out_features),
@@ -27,14 +27,14 @@ class Generator(nn.Module):
             )
 
         def up_block(in_features, out_features, dropout=False):
-            # Each block doubles the image size to rebuild the color image.
+            # DECODER BLOCK
             layers = [
                 nn.ConvTranspose2d(in_features, out_features, 4, 2, 1, bias=False),
                 nn.BatchNorm2d(out_features),
                 nn.ReLU(inplace=True),
             ]
             if dropout:
-                # Randomly drop features during training to reduce overfitting.
+                # DROPOUT
                 layers.append(nn.Dropout(0.5))
             return nn.Sequential(*layers)
 
@@ -43,7 +43,7 @@ class Generator(nn.Module):
         self.down5 = down_block(512, 512)
         self.down6 = down_block(512, 512)
         self.down7 = down_block(512, 512)
-        # Compress the features into the smallest image representation.
+        # Compress images to smaller dimensions with encoder
         self.down8 = nn.Sequential(
             nn.Conv2d(512, 512, 4, 2, 1),
             nn.LeakyReLU(0.2, inplace=True),
@@ -56,14 +56,14 @@ class Generator(nn.Module):
         self.up5 = up_block(1024, 256)
         self.up6 = up_block(512, 128)
         self.up7 = up_block(256, 64)
-        # Restore the full image size and keep color values between -1 and 1.
+        # Restore the full image size and keep color values between -1 and 1 (TODO double check when changing color library?)
         self.output = nn.Sequential(
             nn.ConvTranspose2d(128, out_channels, kernel_size=4, stride=2, padding=1),
             nn.Tanh(),
         )
 
     def forward(self, x):
-
+      # ENCODER
         down1 = self.down1(x)
         down2 = self.down2(down1)
         down3 = self.down3(down2)
@@ -72,7 +72,7 @@ class Generator(nn.Module):
         down6 = self.down6(down5)
         down7 = self.down7(down6)
         down8 = self.down8(down7)
-
+        # DECODER
         up1 = torch.cat((self.up1(down8), down7), dim=1)
         up2 = torch.cat((self.up2(up1), down6), dim=1)
         up3 = torch.cat((self.up3(up2), down5), dim=1)
