@@ -90,4 +90,4 @@ if __name__ == "__main__":
     assert output.shape == (1, 3, 256, 256), output.shape
     assert torch.isfinite(output).all(), "No finite values :("
     assert (output >= -1).all() and (output <= 1).all(), "Output is outside color range of -1 to 1 doofus"
-    print(f"Gen smoke test : {tuple(predictions.shape)}")
+    print(f"Gen smoke test : {tuple(output.shape)}")
