@@ -23,7 +23,7 @@ class ColorizationDataset(Dataset):
         color = color.resize((self.image_size, self.image_size))
         grayscale = color.convert("L")
 
-        # TODO: convert both images to tensors and normalize to [-1, 1]
+        # TODO: convert both images to tensors and normalize to [-1, 1]. Check arcitecture
         # grayscale should be [1, H, W], color should be [3, H, W]. Depends on color library?
         raise NotImplementedError("Image pair conversion still needs finishing")
 
