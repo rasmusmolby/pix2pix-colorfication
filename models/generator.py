@@ -61,3 +61,24 @@ class Generator(nn.Module):
             nn.ConvTranspose2d(128, out_channels, kernel_size=4, stride=2, padding=1),
             nn.Tanh(),
         )
+
+    def forward(self, x):
+
+        down1 = self.down1(x)
+        down2 = self.down2(down1)
+        down3 = self.down3(down2)
+        down4 = self.down4(down3)
+        down5 = self.down5(down4)
+        down6 = self.down6(down5)
+        down7 = self.down7(down6)
+        down8 = self.down8(down7)
+
+        up1 = torch.cat((self.up1(down8), down7), dim=1)
+        up2 = torch.cat((self.up2(up1), down6), dim=1)
+        up3 = torch.cat((self.up3(up2), down5), dim=1)
+        up4 = torch.cat((self.up4(up3), down4), dim=1)
+        up5 = torch.cat((self.up5(up4), down3), dim=1)
+        up6 = torch.cat((self.up6(up5), down2), dim=1)
+        up7 = torch.cat((self.up7(up6), down1), dim=1)
+        return self.output(up7)
+
