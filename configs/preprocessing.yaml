@@ -1,0 +1,9 @@
+# Settings for loading the images
+image_dir: data
+image_size: 256
+batch_size: 16
+shuffle: true
+
+hydra:
+  job:
+    chdir: false
