@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import hydra
+from omegaconf import DictConfig
 from PIL import Image
 from torch.utils.data import DataLoader, Dataset
 
@@ -32,3 +34,16 @@ def get_dataloader(image_dir, batch_size=16, image_size=256, shuffle=True):
     dataset = ColorizationDataset(image_dir, image_size)
     # TODO: split the images into training and validation sets
     return DataLoader(dataset, batch_size=batch_size, shuffle=shuffle)
+
+
+@hydra.main(config_path="configs", config_name="preprocessing")
+def main(cfg: DictConfig):
+    loader = get_dataloader(
+        cfg.image_dir, cfg.batch_size, cfg.image_size, cfg.shuffle
+    )
+    print(f"Found {len(loader.dataset)} images")
+    print(f"Image size: {cfg.image_size}, batch size: {cfg.batch_size}")
+
+
+if __name__ == "__main__":
+    main()
