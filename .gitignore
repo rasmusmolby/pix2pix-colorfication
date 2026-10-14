@@ -225,3 +225,6 @@ data
 Data
 /data
 /Data
+# Hydra runs
+outputs/
+multirun/
