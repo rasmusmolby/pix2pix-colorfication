@@ -1,8 +1,11 @@
+import hydra
+from omegaconf import DictConfig
 import torch
 import torch.nn as nn
 
 
 class Discriminator(nn.Module):
+        # TODO Add a class comment explaining abit about this module?
     def __init__(self, in_channels=1, out_channels=3):
         super().__init__()
 
@@ -24,14 +27,23 @@ class Discriminator(nn.Module):
 
 
 # Smoketest
-if __name__ == "__main__":
-    model = Discriminator().eval()
-    grayscale = torch.randn(1, 1, 64, 64)
-    color = torch.randn(1, 3, 64, 64)
+@hydra.main(config_path="../configs", config_name="model")
+def main(cfg: DictConfig):
+    model = Discriminator(cfg.in_channels, cfg.out_channels).eval()
+    grayscale = torch.randn(
+        cfg.batch_size, cfg.in_channels, cfg.image_size, cfg.image_size
+    )
+    color = torch.randn(
+        cfg.batch_size, cfg.out_channels, cfg.image_size, cfg.image_size
+    )
     with torch.no_grad():
         predictions = model(grayscale, color)
-    assert predictions.ndim == 4 and predictions.shape[:2] == (1, 1)
+    assert predictions.ndim == 4 and predictions.shape[:2] == (cfg.batch_size, 1)
     assert predictions.shape[2] > 0 and predictions.shape[3] > 0
     assert torch.isfinite(predictions).all()
     print(f"Disc smoke test : {tuple(predictions.shape)}")
+
+
+if __name__ == "__main__":
+    main()
 
