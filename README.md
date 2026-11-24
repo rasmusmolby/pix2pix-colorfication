@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🎨 pix2pix-colorfication
+# pix2pix-colorfication
 
 **Turning grayscale photos into color with a conditional GAN (pix2pix).**
 
@@ -140,16 +140,6 @@ python models/discriminator.py --cfg job         # print the resolved config wit
 - Put your images (`.jpg`, `.jpeg`, `.png`) in `data/` before running preprocessing, or pass `shuffle=false` if the folder is empty.
 - Hydra saves run logs and the resolved settings in `outputs/`.
 
-## Roadmap
-
-- [x] pix2pix U-Net generator with skip connections and smoke test
-- [x] PatchGAN discriminator and adversarial + L1 training loop
-- [x] Hydra configuration for the model and preprocessing
-- [ ] Finish image-pair conversion and normalization to `[-1, 1]` in `preprocessing.py`
-- [ ] Train/validation split for custom image folders
-- [ ] Finish the remaining PatchGAN layers in `models/discriminator.py`
-- [ ] Move training into the Hydra pipeline and remove hard-coded paths
-- [ ] Add sample results to this README
 
 ## Acknowledgements
 
