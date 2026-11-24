@@ -1,4 +1,6 @@
 torch
+torchvision
 pillow
 hydra-core==1.4.0rc1
-
+wandb
+torchprofile

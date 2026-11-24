@@ -6,7 +6,6 @@ from torch.optim.lr_scheduler import StepLR
 import torchvision
 from torchvision import datasets
 from torch.utils.data import Dataset, DataLoader
-import args
 from torchvision import transforms
 from unet import Unet as unet
 from data_loader import gray_color_data
@@ -64,7 +63,7 @@ def train(model, device, optimizer, train_loader, epoch):
         if i % 200 == 0:
             print("Train Epoch: %s , Iteration: %s , Train Loss: %s" % (epoch, i, loss.item()))
             wandb.log({"Train loss": loss.item()})
-    return loss.item
+    return loss.item()
 
 
 def overview():
@@ -98,11 +97,12 @@ def val(model, device, val_loader):
 
 
 def save_test_image(pred_tensor, target_tensor, epoch):
+    out_dir = "test_output_images/places_cropped"
+    os.makedirs(out_dir, exist_ok=True)  # ensure folder exists
     pred_img = transforms.functional.to_pil_image(pred_tensor[0].detach().cpu())
-    pred_img.save(f"test_output_images/places_cropped/pred_img{epoch}.jpg")
-    if os.path.exists(test_output_images/places/target_img1.jpg) == False:
-        target_img = transforms.functional.to_pil_image(target_tensor[0].detach().cpu())
-        target_img.save(f"test_output_images/places_cropped/target_img{epoch}.jpg")
+    pred_img.save(f"{out_dir}/pred_img{epoch}.jpg")
+    target_img = transforms.functional.to_pil_image(target_tensor[0].detach().cpu())
+    target_img.save(f"{out_dir}/target_img{epoch}.jpg")
 
 
 def main():
@@ -173,6 +173,7 @@ def main():
             print("Lower val result")
             create_checkpoint(epoch, model, optimizer, train_loss, new_val_loss, run_id, checkpoint_path)
             print("New checkpoint has been made")
+            val_loss = new_val_loss  # only checkpoint again when validation improves
         
         # saving one image to check progress
         if epoch % 10 == 0:
