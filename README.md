@@ -122,10 +122,9 @@ python test.py
 reports the mean absolute error on the Places365 test split, and saves a few prediction/target
 pairs to `test_output_images/places_cropped/`. It uses CUDA, Apple MPS or the CPU, whichever is available.
 
-## Hydra configs (new pipeline)
+## Hydra configs
 
-The `models/` package and `preprocessing.py` are a cleaner, config-driven rewrite that is still
-in progress. Settings live in [`configs/model.yaml`](configs/model.yaml) and
+Settings live in [`configs/model.yaml`](configs/model.yaml) and
 [`configs/preprocessing.yaml`](configs/preprocessing.yaml), and you can override any of them from
 the command line:
 
@@ -147,6 +146,7 @@ python models/discriminator.py --cfg job         # print the resolved config wit
 - Zhou et al., [*Places: A 10 Million Image Database for Scene Recognition*](http://places2.csail.mit.edu/)
 - The U-Net in `unet.py` follows [this tutorial by Fernando Palomino](https://medium.com/@fernandopalominocobo/mastering-u-net-a-step-by-step-guide-to-segmentation-from-scratch-with-pytorch-6a17c5916114)
 - The pretrained baseline uses [milesial/Pytorch-UNet](https://github.com/milesial/Pytorch-UNet)
+DM for any questions or oppositions 
 
 ## License
 
